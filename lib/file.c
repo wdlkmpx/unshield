@@ -1,19 +1,12 @@
 /* $Id$ */
 #include "internal.h"
-#if USE_OUR_OWN_MD5
-#include "md5/global.h"
-#include "md5/md5.h"
-#else
-#include <openssl/md5.h>
-#define MD5Init MD5_Init
-#define MD5Update MD5_Update
-#define MD5Final MD5_Final
-#endif
+
 #include "cabfile.h"
 #include "log.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include "md5/md5.h"
 
 #if !defined(_MSC_VER)
 #include <sys/param.h>    /* for MIN(a,b) */
@@ -745,7 +738,7 @@ bool unshield_file_save (Unshield* unshield, int index, const char* filename)/*{
   FileDescriptor* file_descriptor;
 	MD5_CTX md5;
 
-	MD5Init(&md5);
+	MD5_Init(&md5);
 
   if (!unshield)
     goto exit;
@@ -872,7 +865,7 @@ bool unshield_file_save (Unshield* unshield, int index, const char* filename)/*{
       bytes_left -= bytes_to_write;
     }
 
-    MD5Update(&md5, output_buffer, bytes_to_write);
+    MD5_Update(&md5, output_buffer, bytes_to_write);
 
     if (output)
     {
@@ -896,7 +889,7 @@ bool unshield_file_save (Unshield* unshield, int index, const char* filename)/*{
   if (unshield->header_list->major_version >= 6)
   {
     unsigned char md5result[16];
-    MD5Final(md5result, &md5);
+    MD5_Final(md5result, &md5);
 
     if (0 != memcmp(md5result, file_descriptor->md5, 16))
     {
