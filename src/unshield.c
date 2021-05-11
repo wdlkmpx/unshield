@@ -4,6 +4,14 @@
 #define _DEFAULT_SOURCE 1
 #define _POSIX_C_SOURCE 2
 #endif
+
+#ifndef _FILE_OFFSET_BITS
+#define _FILE_OFFSET_BITS 64
+#endif
+#ifndef _LARGEFILE64_SOURCE
+#define _LARGEFILE64_SOURCE 1
+#endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <ctype.h>

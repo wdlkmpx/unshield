@@ -2,6 +2,14 @@
 #ifndef __unshield_h__
 #define __unshield_h__
 
+// Ensure we get the 64-bit variants of the CRT's file I/O calls
+#ifndef _FILE_OFFSET_BITS
+#define _FILE_OFFSET_BITS 64
+#endif
+#ifndef _LARGEFILE64_SOURCE
+#define _LARGEFILE64_SOURCE 1
+#endif
+
 #include <stdbool.h>
 #include <stddef.h>
 
