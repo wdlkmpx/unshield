@@ -21,7 +21,7 @@
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #endif
 
-#include <zlib.h>
+#include "zlib/zlib.h"
 
 #define VERBOSE 3
 
