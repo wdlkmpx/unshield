@@ -1,16 +1,5 @@
 os:
-  - linux
-  - osx
-  - freebsd
   - windows
-
-osx_image: xcode12u
-dist: bionic
-arch:
-  - amd64
-  - arm64
-  - ppc64le
-  - s390x
 
 language: c
 
