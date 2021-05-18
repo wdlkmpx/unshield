@@ -1,13 +1,14 @@
 #!/bin/sh
 
-if test "$TRAVIS_OS_NAME" = "windows" ; then # see rebuild.sh
-   echo "*** Not running tests on Windows"
-   exit 0
-fi
-
 . test/functions.sh
-set_md5sum    # ${MD5SUM}
-set_unshield  # ${UNSHIELD}
+
+if test "$TRAVIS_OS_NAME" = "windows" ; then # see rebuild.sh
+    export UNSHIELD="$(pwd)/build/src/unshield.exe"
+    set_md5sum    # ${MD5SUM}
+else
+    set_md5sum    # ${MD5SUM}
+    set_unshield  # ${UNSHIELD}
+fi
 
 ALL_RET=0
 for SCRIPT in $(find $(dirname $0)/test/v* -name '*.sh' | sort)
