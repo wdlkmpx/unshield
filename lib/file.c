@@ -738,7 +738,9 @@ bool unshield_file_save (Unshield* unshield, int index, const char* filename)/*{
   FileDescriptor* file_descriptor;
 	MD5_CTX md5;
 
-	MD5_Init(&md5);
+  if (unshield->header_list->major_version >= 6) {
+     MD5_Init(&md5);
+  }
 
   if (!unshield)
     goto exit;
@@ -865,7 +867,9 @@ bool unshield_file_save (Unshield* unshield, int index, const char* filename)/*{
       bytes_left -= bytes_to_write;
     }
 
-    MD5_Update(&md5, output_buffer, bytes_to_write);
+    if (unshield->header_list->major_version >= 6) {
+       MD5_Update(&md5, output_buffer, bytes_to_write);
+    }
 
     if (output)
     {
