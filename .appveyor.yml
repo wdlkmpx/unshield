@@ -1,0 +1,40 @@
+image: Visual Studio 2019
+
+cache: C:\Tools\vcpkg\installed\
+
+environment:
+  APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  matrix:
+    - compiler: msvc
+
+platform:
+  - x86-windows
+
+configuration:
+  - Release
+
+for:
+  -
+    matrix:
+      only:
+        - configuration: Release
+          platform: x86-windows
+          compiler: msvc
+    build_script:
+      - call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
+      - cmake -G "NMake Makefiles" -DBUILD_STATIC=ON ..
+      - nmake
+      - if %ERRORLEVEL% GEQ 1 EXIT /B 1
+
+before_build:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - mkdir build
+  - cd build
+
+install:
+  - cd C:\Tools\vcpkg
+  - if not exist downloads mkdir downloads
+  - cd downloads
+  - cd ..
+  - cd %APPVEYOR_BUILD_FOLDER%
+
