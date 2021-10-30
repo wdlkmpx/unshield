@@ -39,7 +39,7 @@
 #define VERSION "Unknown"
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__MINGW32__)
 #define SIZET_FORMAT "Iu"
 #else /* C99 */
 #define SIZET_FORMAT "zu"
