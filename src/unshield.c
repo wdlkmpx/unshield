@@ -257,25 +257,11 @@ static bool handle_parameters(
     {
     switch (c)
     {
-      case 'c':
-        component_name = optarg;
-        break;
-
-      case 'd':
-        output_directory = optarg;
-        break;
-
-      case 'D':
-        log_level = atoi(optarg);
-        break;
-
-      case 'g':
-        file_group_name = optarg;
-        break;
-
-      case 'i':
-        is_version = atoi(optarg);
-        break;
+      case 'c': component_name   = optarg;        break;
+      case 'd': output_directory = optarg;        break;
+      case 'D': log_level        = atoi(optarg);  break;
+      case 'g': file_group_name  = optarg;        break;
+      case 'i': is_version       = atoi(optarg);  break;
 
       case 'e':
 #ifdef HAVE_ICONV
@@ -287,38 +273,14 @@ static bool handle_parameters(
 #endif
         break;
 
-      case 'j':
-        junk_paths = true;
-        break;
-
-      case 'L':
-        make_lowercase = true;
-        break;
-        
-      case 'R':
-        raw_filename = true;
-        break;
-
-      case 'n':
-        overwrite = OVERWRITE_NEVER;
-        break;
-
-      case 'o':
-        overwrite = OVERWRITE_ALWAYS;
-        break;
-
-      case 'O':
-        format = FORMAT_OLD;
-        break;
-        
-      case 'r':
-        format = FORMAT_RAW;
-        break;
-
-      case 'v':
-        verbose = true;
-        break;
-
+      case 'j': junk_paths     = true; break;
+      case 'L': make_lowercase = true; break;
+      case 'R': raw_filename   = true; break;
+      case 'n': overwrite      = OVERWRITE_NEVER;  break;
+      case 'o': overwrite      = OVERWRITE_ALWAYS; break;
+      case 'O': format         = FORMAT_OLD; break;
+      case 'r': format         = FORMAT_RAW; break;
+      case 'v': verbose        = true; break;
       case 'V':
         printf("Unshield version " VERSION ". MIT License. (C) 2003-2021 David Eriksson.\n");
         exit(0);
@@ -343,26 +305,11 @@ static bool handle_parameters(
   char action_char = argv[optind++][0];
   switch (action_char)
   {
-    case 'c':
-      action = ACTION_LIST_COMPONENTS;
-      break;
-
-    case 'g':
-      action = ACTION_LIST_FILE_GROUPS;
-      break;
-
-    case 'l':
-      action = ACTION_LIST_FILES;
-      break;
-
-    case 't':
-      action = ACTION_TEST;
-      break;
-
-    case 'x':
-      action = ACTION_EXTRACT;
-      break;
-
+    case 'c': action = ACTION_LIST_COMPONENTS;  break;
+    case 'g': action = ACTION_LIST_FILE_GROUPS; break;
+    case 'l': action = ACTION_LIST_FILES;       break;
+    case 't': action = ACTION_TEST;             break;
+    case 'x': action = ACTION_EXTRACT;          break;
     default:
       fprintf(stderr, "Unknown action '%c' on command line.\n\n", action_char);
       show_usage(argv[0]);
