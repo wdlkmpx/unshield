@@ -15,7 +15,9 @@ LT_INIT
 dnl Checks for programs.
 AC_PROG_CC
 AC_C_CONST
-AC_CHECK_HEADERS(inttypes.h stdint.h unistd.h dlfcn.h fnmatch.h)
+AC_CHECK_HEADERS(inttypes.h stdint.h unistd.h dlfcn.h fnmatch.h shlwapi.h)
+# Windows: shlwapi.h (instead of fnmatch.h)
+AC_CHECK_HEADER([shlwapi.h],[LIBS="-lshlwapi $LIBS"])
 
 #AC_CHECK_FUNC(
 #   [iconv],

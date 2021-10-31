@@ -4,6 +4,15 @@
 #define _DEFAULT_SOURCE 1
 #define _POSIX_C_SOURCE 2
 #endif
+
+#ifdef HAVE_CONFIG_H
+#ifdef AUTOTOOLS
+#include <config.h>
+#else
+#include "lib/unshield_config.h"
+#endif
+#endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <ctype.h>
@@ -15,24 +24,27 @@
 #include <getopt.h>
 #include <errno.h>
 #include "../lib/libunshield.h"
-
-#ifdef HAVE_CONFIG_H
-#ifdef AUTOTOOLS
-#include <config.h>
-#else
-#include "lib/unshield_config.h"
-#endif
-#endif
-
-#if HAVE_FNMATCH_H
-#  include <fnmatch.h>
-#else
-// ../win32_msvc/fnmatch.h is ANSI C [musl fnmatch.c/h]
-#  include "../win32_msvc/fnmatch.h"
-#endif
-
 #ifdef HAVE_ICONV
 #include <iconv.h>
+#endif
+
+#ifdef HAVE_SHLWAPI_H /* Windows - PathMatchSpec */
+#include <shlwapi.h>
+#endif
+#ifdef HAVE_FNMATCH_H
+#include <fnmatch.h>
+#endif
+
+#if defined(HAVE_SHLWAPI_H) && !defined(HAVE_FNMATCH_H)
+//#define fnmatch(pattern,string,flags) (!PathMatchSpec(string,pattern))
+int fnmatch (const char * pattern, const char * string, int flags)
+{
+   wchar_t pszFile[1024];
+   wchar_t pszSpec[1024];
+   mbstowcs (pszFile, string,  sizeof(pszFile));
+   mbstowcs (pszSpec, pattern, sizeof(pszSpec));
+   return (!PathMatchSpecW (pszFile, pszSpec));
+}
 #endif
 
 #ifndef VERSION
