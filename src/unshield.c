@@ -558,19 +558,6 @@ static bool extract_file(Unshield* unshield, const char* prefix, int index)
   }
 #endif
 
-#ifdef __GLIBC__
-  /* use GNU extension to return non-existing files to real_output_directory */
-  realpath(output_directory, real_output_directory);
-  realpath(filename, real_filename);
-  if (real_filename == NULL || strncmp(real_filename,
-                                       real_output_directory,
-                                       strlen(real_output_directory)) != 0)
-  {
-    traversal_attack = 1;
-    goto exit;
-  }
-#endif
-
   printf("  extracting: %s\n", filename);
   switch (format)
   {
