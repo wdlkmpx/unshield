@@ -2,11 +2,35 @@
 # Run this to generate all the initial makefiles, etc.
 
 # special params:
+# - po       update .pot & po files
+# - linguas  update LINGUAS and POTFILES.in
 # - release  create release tarball
 
 #===========================================================================
 
-if test "$1" == "release" || test "$1" == "--release" ; then
+if test "$1" =  "po" ; then
+	# Before creating a release you might want to update the po files
+	test -d "po/"         || exit
+	#git clean -dfx
+	test -f ./configure   || ./autogen.sh
+	test -f ./po/Makefile || ./configure
+	find po -name '*.pot' -delete # updates don't happen if pot files already exist...
+	make -C po update-po
+	# cleanup
+	rm -f po/*.po~
+	#sed -i '/#~ /d' po/*.po
+	#git clean -dfx
+	exit
+fi
+
+if test "$1" =  "linguas" ; then
+	./po/Makefile.in.gen
+	exit $?
+fi
+
+#===========================================================================
+
+if test "$1" = "release" || test "$1" = "--release" ; then
 	pkg="$(grep -m 1 AC_INIT configure.ac | cut -f 2 -d '[' | cut -f 1 -d ']')"
 	ver="$(grep -m 1 AC_INIT configure.ac | cut -f 3 -d '[' | cut -f 1 -d ']')"
 	ver=$(echo $ver)
@@ -36,7 +60,7 @@ test -z "$AUTOHEADER" && AUTOHEADER=autoheader
 test -z "$LIBTOOLIZE" && LIBTOOLIZE=$(which libtoolize glibtoolize 2>/dev/null | head -1)
 test -z "$LIBTOOLIZE" && LIBTOOLIZE=libtoolize #paranoid precaution
 
-if test "$1" == "verbose" || test "$1" == "--verbose" ; then
+if test "$1" = "verbose" || test "$1" = "--verbose" ; then
 	set -x
 	verbose='--verbose'
 	verbose2='--debug'
@@ -55,7 +79,9 @@ if test -n "$m4dir" ; then
 fi
 
 # Get all required m4 macros required for configure
-$LIBTOOLIZE ${verbose} --copy --force || exit 1
+if grep -q LT_INIT configure.ac ; then
+	$LIBTOOLIZE ${verbose} --copy --force || exit 1
+fi
 $ACLOCAL ${verbose} || exit 1
 
 # Generate config.h.in
@@ -67,4 +93,7 @@ $AUTOMAKE ${verbose} --add-missing --copy --force || exit 1
 # generate configure
 $AUTOCONF ${verbose} --force || exit 1
 
+if test "$(ls $m4dir)" = "" ; then
+	rmdir $m4dir
+fi
 rm -rf autom4te.cache
