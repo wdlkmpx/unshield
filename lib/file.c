@@ -1,5 +1,3 @@
-/* $Id$ */
-
 #include "w_endian.h"
 #include "internal.h"
 
