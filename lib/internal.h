@@ -2,7 +2,7 @@
 #ifndef __internal_h__
 #define __internal_h__
 
-#include "pendian_detect.h"
+#include "w_endian.h"
 #include "libunshield.h"
 
 #ifdef AUTOTOOLS
@@ -110,27 +110,6 @@ uint8_t* unshield_header_get_buffer(Header* header, uint32_t offset);
 #define FCLOSE(file)    if (file) { fclose(file); (file) = NULL; }
 #define FSIZE(file)     ((file) ? unshield_fsize(file) : 0)
 #define STREQ(s1,s2)    (0 == strcmp(s1,s2))
-
-#if __BIG_ENDIAN__
-/* byteswap.h */
-static inline uint16_t bswap_16(uint16_t x)
-{
-	return ((x << 8) & 0xff00) | ((x >> 8) & 0x00ff);
-}
-static inline uint32_t bswap_32(uint32_t x)
-{
-	return	((x << 24) & 0xff000000 ) |
-		((x <<  8) & 0x00ff0000 ) |
-		((x >>  8) & 0x0000ff00 ) |
-		((x >> 24) & 0x000000ff );
-}
-#define letoh16(x)    bswap_16(x)
-#define letoh32(x)    bswap_32(x)
-
-#else // not big endian
-#define letoh32(x) (x)
-#define letoh16(x) (x)
-#endif /* __BIG_ENDIAN__ */
 
 static inline uint16_t get_unaligned_le16(const uint8_t *p)
 {
