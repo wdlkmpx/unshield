@@ -4,11 +4,6 @@
 set_md5sum    # ${MD5SUM}
 set_unshield  # ${UNSHIELD}
 
-if test "$TRAVIS_OS_NAME" = "windows" && test "$TRAVIS_COMPILER" = "clang" ; then
-    # allow MSVC to fail, currently /test/v0/wireplay.sh fails
-    ALLOW_FAIL=1
-fi
-
 ALL_RET=0
 for SCRIPT in $(find $(dirname $0)/test/v* -name '*.sh' | sort)
 do

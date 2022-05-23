@@ -20,23 +20,19 @@ uname -a
 
 export CFLAGS="-DDEBUG_W_ENDIAN"
 
-if [ ! -f configure ] ; then
-    ./autogen.sh || exit 1
-fi
-
 ./configure \
     && make \
     && make install
 exit_code=$?
 
-#for i in config.h config.log config.mk
-#do
-#   echo "
-#===============================
-#	$i
-#===============================
-#"
-#   cat ${i}
-#done
+for i in config.h config.log config.mk
+do
+   echo "
+===============================
+	$i
+===============================
+"
+   cat ${i}
+done
 
 exit ${exit_code}

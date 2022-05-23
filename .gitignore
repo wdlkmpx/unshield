@@ -12,7 +12,6 @@ lib/unshield_config.h
 libunshield.pc
 *.lo
 ltmain.sh
-Makefile
 *.o
 src/unshield
 src/unshield-deobfuscate
@@ -21,17 +20,19 @@ src/unshield-deobfuscate
 build
 /cmake-build-debug/
 
-Makefile.in
 config.h
 config.h.in*
 .deps
 config.log
 config.status
 libtool
-configure
 aclocal.m4
 autoconf
 autoconf-m4
 stamp-h1
 .dirstamp
 
+config.mk
+config.sh
+
+unshield.exe
