@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Project name and version
-PACKAGE="app"
-VERSION="1.0"
+PACKAGE="unshield"
+VERSION="1.5w"
 PACKAGE_URL=''
 
 # Flags that will be used in all makefiles that compile code...

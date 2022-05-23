@@ -57,6 +57,7 @@ extern "C" {
 
 #elif defined(_WIN32)
 //#   include <windows.h>
+#   define W_LITTLE_ENDIAN 1 /* assume Windows = Little endian */
 #   if defined(_MSC_VER)
 #       include <stdlib.h>
 #       define bswap16(x) _byteswap_ushort(x)

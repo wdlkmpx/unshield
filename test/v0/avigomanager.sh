@@ -17,7 +17,8 @@ unzip -o -q test.zip 'data*'
 # ===================================================================
 
 set +e
-timeout 10 ${UNSHIELD} -d extract1 x data1.cab > log1 2>&1
+
+${UNSHIELD} -d extract1 x data1.cab > log1 2>&1
 CODE=$?
 if [ ${CODE} -ne 1 ]; then
     cat log1 >&2
@@ -25,7 +26,7 @@ if [ ${CODE} -ne 1 ]; then
     exit 2
 fi
 
-timeout 10 ${UNSHIELD} -O -d extract2 x data1.cab > log2 2>&1
+${UNSHIELD} -O -d extract2 x data1.cab > log2 2>&1
 CODE=$?
 if [ ${CODE} -ne 0 ]; then
     cat log2 >&2
@@ -34,9 +35,7 @@ if [ ${CODE} -ne 0 ]; then
 fi
 
 cd extract2
-find . -type f -print0 | LC_ALL=C sort -z | xargs -0 ${MD5SUM} > ../md5
-winFixMd5 ../md5
-if ! diff -wu ${MD5_FILE} ../md5 >&2 ; then
+if ! check_md5 ${MD5_FILE} md5.log ; then
     echo "MD5 sums diff" >&2
     exit 4
 fi

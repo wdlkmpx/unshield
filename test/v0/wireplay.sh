@@ -18,7 +18,7 @@ unzip -o -q test.zip
 
 set +e
 
-timeout 10 "${UNSHIELD}" -O -d extract x dpcb1197-Wireplay/DOS/data1.cab > log 2>&1
+${UNSHIELD} -O -d extract x dpcb1197-Wireplay/DOS/data1.cab > log 2>&1
 CODE=$?
 if [ ${CODE} -ne 0 ]; then
     cat log >&2
@@ -27,9 +27,7 @@ if [ ${CODE} -ne 0 ]; then
 fi
 
 cd extract
-find . -type f -print0 | LC_ALL=C sort -z | xargs -0 ${MD5SUM} > ../md5
-winFixMd5 ../md5
-if ! diff -wu "${MD5_FILE}" ../md5 >&2 ; then
+if ! check_md5 ${MD5_FILE} md5.log ; then
     echo "MD5 sums diff" >&2
     exit 4
 fi
