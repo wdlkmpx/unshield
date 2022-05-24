@@ -127,10 +127,10 @@ download_file()
     dlurl="$1"
     dlfile="$2"
     if ! test -f "${dlfile}" ; then
-        echo "${XWGET} \"${dlfile}\" \"${dlurl}\""
+        #echo "${XWGET} \"${dlfile}\" \"${dlurl}\""
         ${XWGET} "${dlfile}" "${dlurl}"
         if [ $? -ne 0 ] ; then
-            echo "Could not download file"
+            echo "Could not download file" >&2
             rm -f "${dlfile}"
             return 1
         fi
