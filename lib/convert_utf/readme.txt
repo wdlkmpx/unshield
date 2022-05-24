@@ -1,4 +1,18 @@
+These files were downloaded from http://gears.googlecode.com/svn/trunk/third_party/convert_utf/ on 2013-02-15.
 
+GOOGLE
+======
+This is a utf8/16/32 conversion functions downloaded from unicode.org website
+from url: ftp://www.unicode.org/Public/PROGRAMS/CVTUTF/
+
+Only ConvertUTF.h and ConvertUTF.c files were downloaded. The rest of files
+related to UTF7 and testing harness were not downloaded.
+
+No modifications have been done.
+
+
+README
+======
 The accompanying C source code file "ConvertUTF.c" and the associated header
 file "ConvertUTF.h" provide for conversion between various transformation
 formats of Unicode characters.  The following conversions are supported:

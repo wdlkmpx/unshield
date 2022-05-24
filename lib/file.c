@@ -1,4 +1,6 @@
 /* $Id$ */
+
+#include "w_endian.h"
 #include "internal.h"
 
 #include "cabfile.h"
@@ -6,7 +8,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include "md5/md5.h"
+#include "w_md5.h"
 
 #if !defined(_MSC_VER)
 #include <sys/param.h>    /* for MIN(a,b) */

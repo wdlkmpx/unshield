@@ -2,7 +2,6 @@
 #ifndef __internal_h__
 #define __internal_h__
 
-#include "w_endian.h"
 #include "libunshield.h"
 
 #ifdef AUTOTOOLS
