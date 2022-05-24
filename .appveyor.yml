@@ -1,3 +1,6 @@
+# https://github.com/wxWidgets/wxWidgets/blob/master/appveyor.yml
+# https://github.com/wxWidgets/wxWidgets/blob/master/build/tools/appveyor.bat
+
 image: Visual Studio 2019
 
 cache: C:\Tools\vcpkg\installed\
@@ -6,7 +9,9 @@ environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
   matrix:
     - compiler: msvc
-    - compiler: gcc
+    - compiler: mingw32
+    - compiler: mingw64
+    - compiler: cygwin
 
 platform:
   - x86-windows
@@ -35,13 +40,36 @@ for:
       only:
         - configuration: Release
           platform: x86-windows
-          compiler: gcc
+          compiler: mingw32
     environment:
-      CHERE_INVOKING: yes
       MSYSTEM: MINGW32
+      CHERE_INVOKING: yes
     build_script:
       - cd %APPVEYOR_BUILD_FOLDER%
       - C:\msys64\usr\bin\bash -lc "./configure && make"
+  -
+    matrix:
+      only:
+        - configuration: Release
+          platform: x86-windows
+          compiler: mingw64
+    environment:
+      CHERE_INVOKING: yes
+      MSYSTEM: MINGW64
+    build_script:
+      - cd %APPVEYOR_BUILD_FOLDER%
+      - C:\msys64\usr\bin\bash -lc "./configure && make"
+  -
+    matrix:
+      only:
+        - configuration: Release
+          platform: x86-windows
+          compiler: cygwin
+    environment:
+      CHERE_INVOKING: yes
+    build_script:
+      - cd %APPVEYOR_BUILD_FOLDER%
+      - C:\cygwin\bin\bash -lc "./configure && make"
 
 #install:
 #  - cd C:\Tools\vcpkg
