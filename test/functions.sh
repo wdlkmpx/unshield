@@ -5,9 +5,9 @@ set_md5sum()
     if test -n "$MD5SUM" ; then
         return # already set
     fi
-    if command -v md5sum >/dev/null 2>&1 ; then
+    if command -v md5sum ; then
         export MD5SUM='md5sum'
-    elif command -v gmd5sum >/dev/null 2>&1 ; then
+    elif command -v gmd5sum ; then
         export MD5SUM='gmd5sum'
     elif command -v md5 2>/dev/null ; then
         export MD5SUM='md5'
@@ -49,9 +49,7 @@ check_md5()
     fi
 }
 
-
 #==============================================================
-
 
 set_unshield()
 {
@@ -102,27 +100,42 @@ set_directory()
 }
 
 
+set_wget()
+{
+    if test -n "$XWGET" ; then
+        return # already set
+    fi
+    if command -v curl ; then
+        export XWGET='curl -sSL -o'
+    elif command -v fetch ; then
+        # FreeBSD
+        export XWGET='fetch -q --no-verify-peer -o'
+    elif command -v wget ; then
+        export XWGET='wget -q --no-check-certificate -O'
+    else
+        echo "Cannot find curl/fetch/wget.. aborting"
+        exit 1
+    fi
+}
+
+
 download_file()
 {
+    if test -z "$XWGET" ; then
+        return
+    fi
     dlurl="$1"
     dlfile="$2"
     if ! test -f "${dlfile}" ; then
-        if command -v curl >/dev/null 2>&1 ; then
-            curl -sSL -o "${dlfile}" "${dlurl}"
-        elif command -v fetch >/dev/null 2>&1 ; then
-            # FreeBSD
-            fetch -q --no-verify-peer -o "${dlfile}" "${dlurl}"
-        elif command -v wget >/dev/null 2>&1 ; then
-            wget -q --no-check-certificate -O "${dlfile}" "${dlurl}"
-        else
-            echo "Cannot find curl/fetch/wget.. aborting"
-            exit 1
+        echo "${XWGET} \"${dlfile}\" \"${dlurl}\""
+        ${XWGET} "${dlfile}" "${dlurl}"
+        if [ $? -ne 0 ] ; then
+            echo "Could not download file"
+            rm -f "${dlfile}"
+            return 1
         fi
-        #if [ $? -ne 0 ] ; then
-        #    rm -f "${dlfile}"
-        #    exit 1
-        #fi
     fi
+    return 0
 }
 
 

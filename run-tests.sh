@@ -2,6 +2,7 @@
 
 . test/functions.sh
 set_md5sum    # ${MD5SUM}
+set_wget      # ${XWGET}
 set_unshield  # ${UNSHIELD}
 
 ALL_RET=0

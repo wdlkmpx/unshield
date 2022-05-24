@@ -5,6 +5,7 @@ MD5_FILE=`pwd`/`basename $0 .sh`.md5
 
 . ../functions.sh
 set_md5sum    # ${MD5SUM}
+set_wget      # ${XWGET}
 set_unshield  # ${UNSHIELD}
 set_directory ${HOME}/.cache/unshieldtest/avigomanager
 
