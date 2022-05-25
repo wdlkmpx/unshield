@@ -55,7 +55,12 @@ static int fnmatch (const char * pattern, const char * string, int flags)
 #define VERSION "Unknown"
 #endif
 
-#if defined(_WIN32) && !defined(__MINGW32__)
+// only the old original mingw defines __MINGW32_VERSION
+// and doesn't really work with "zu"
+// _MSC_VER >= 1900 implements "zu"
+#if (defined(_WIN32) && !defined(__MINGW32__)) \
+    || (defined(__MINGW32__) && __USE_MINGW_ANSI_STDIO != 1) \
+    || (defined(__MINGW32__) && defined(__MINGW32_VERSION))
 #define SIZET_FORMAT "Iu"
 #else /* C99 */
 #define SIZET_FORMAT "zu"

@@ -59,7 +59,7 @@ w_finish_func()
 	if [ "$OS_TARGET" = "MinGW" ] ; then
 		echo "LCOMDLG32 = -lcomdlg32" >> config.mk
 		echo "LSHLWAPI = -lshlwapi" >> config.mk
-		echo "#define __USE_MINGW_ANSI_STDIO 1" >> config.h
+		echo "#define __GNU_SOURCE 1" >> config.h
 	fi
 }
 
