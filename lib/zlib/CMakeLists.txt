@@ -14,12 +14,14 @@ set(ZLIB_HEADERS
 set(ZLIB_SOURCES
 	"adler32.c"
 #	"crc32.c"
+#	"compress.c"
 #	"deflate.c"
 #	"infback.c"
 	"inffast.c"
 	"inflate.c"
 	"inftrees.c"
 #	"trees.c"
+	"uncompr.c"
 	"zutil.c"
 )
 
