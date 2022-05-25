@@ -9,7 +9,11 @@
 #define ZCONF_H
 
 #ifdef HAVE_CONFIG_H
+#ifdef AUTOTOOLS
 #include <config.h>
+#else
+#include "lib/unshield_config.h"
+#endif
 #endif
 
 #ifndef HAVE_UNISTD_H
