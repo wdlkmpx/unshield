@@ -14,7 +14,7 @@ libunshield.pc
 ltmain.sh
 *.o
 src/unshield
-src/unshield-deobfuscate
+unshield.exe
 .*.swp
 .idea
 build
@@ -34,5 +34,3 @@ stamp-h1
 
 config.mk
 config.sh
-
-unshield.exe

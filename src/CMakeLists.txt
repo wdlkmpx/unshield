@@ -14,8 +14,8 @@ elseif(ICONV_LIBRARIES)
     target_link_libraries(unshield ${ICONV_LIBRARIES})
 endif()
 
-add_executable(unshield-deobfuscate "unshield-deobfuscate.c")
-target_link_libraries(unshield-deobfuscate libunshield)
+#add_executable(unshield-deobfuscate "unshield-deobfuscate.c")
+#target_link_libraries(unshield-deobfuscate libunshield)
 
 if(BUILD_STATIC AND MSVC)
     set_msvc_runtime_static()

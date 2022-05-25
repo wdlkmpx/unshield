@@ -220,6 +220,7 @@ static void show_usage(const char* name)
       "Syntax:\n"
       "\n"
       "\t%s [-c COMPONENT] [-d DIRECTORY] [-D LEVEL] [-g GROUP] [-i VERSION] [-e ENCODING] [-GhlOrV] c|g|l|t|x CABFILE [FILENAME...]\n"
+      "\t%s --deobfuscate INPUT-FILE OUTPUT-FILE\n"
       "\n"
       "Options:\n"
       "\t-c COMPONENT  Only list/extract this component\n"
@@ -253,7 +254,7 @@ static void show_usage(const char* name)
       " (wildcards are supported)"
       "\n"
       ,
-      name);
+      name, name);
 
 #if 0
       "\t-n            Never overwrite files\n"
@@ -262,9 +263,7 @@ static void show_usage(const char* name)
 #endif
 }
 
-static bool handle_parameters(
-    int argc, 
-    char* const argv[])
+static bool handle_parameters (int argc, char* const argv[])
 {
     int c;
 
@@ -758,10 +757,66 @@ static bool do_action(Unshield* unshield, ActionHelper helper)
   return true;
 }
 
-int main(int argc, char* const argv[])
+
+//===============================================================
+
+static int deobfuscate_main (int argc, char** argv)
+{
+    unsigned seed = 0;
+    FILE* input = NULL;
+    FILE* output = NULL;
+    size_t size;
+    unsigned char buffer[16384];
+    char *inpath, *outpath;
+
+    if (argc != 4) {
+        fprintf(stderr, "Syntax:\n  %s --deobfuscate INPUT-FILE OUTPUT-FILE\n", argv[0]);
+        exit(1);
+    }
+
+    inpath  = argv[2];
+    outpath = argv[3];
+
+    input = fopen(inpath, "rb");
+    if (!input) {
+        fprintf(stderr, "Failed to open %s for reading\n", inpath);
+        exit(2);
+    }
+
+    output = fopen(outpath, "wb");
+    if (!output) {
+        fclose (input);
+        fprintf(stderr, "Failed to open %s for writing\n", outpath);
+        exit(3);
+    }
+
+    while ((size = fread(buffer, 1, sizeof(buffer), input)) != 0)
+    {
+        unshield_deobfuscate(buffer, size, &seed);
+        if (fwrite(buffer, 1, size, output) != size)
+        {
+            fprintf(stderr, "Failed to write %lu bytes to %s\n", (unsigned long)size, outpath);
+            exit(4);
+        }
+    }
+
+    fclose(input);
+    fclose(output);
+    return 0;
+}
+
+//===============================================================
+
+int main(int argc, char *argv[])
 {
   bool success = false;
   Unshield* unshield = NULL;
+  if (argc > 1)
+  {
+      if (strcmp(argv[1], "--deobfuscate") == 0) {
+          return deobfuscate_main(argc, argv);
+      }
+  }
 
   setlocale(LC_ALL, "");
 
