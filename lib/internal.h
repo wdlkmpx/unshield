@@ -10,9 +10,7 @@
 #include "lib/unshield_config.h"
 #endif
 
-#if HAVE_STDINT_H
-#include <stdint.h>
-#elif HAVE_INTTYPES_H
+#if HAVE_INTTYPES_H
 #include <inttypes.h>
 #endif
 
