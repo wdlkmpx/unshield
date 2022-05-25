@@ -24,20 +24,22 @@
 #include <getopt.h>
 #include <errno.h>
 #include "../lib/libunshield.h"
+
+#if !defined(HAVE_ICONV)
+#  if defined(__GLIBC_MINOR__) || defined(__GNU_LIBRARY__)
+#    define HAVE_ICONV 1
+#  endif
+#endif
+
 #ifdef HAVE_ICONV
 #include <iconv.h>
 #endif
 
-#ifdef HAVE_SHLWAPI_H /* Windows - PathMatchSpec */
+#ifdef _WIN32
+/* Windows - PathMatchSpec */
 #include <shlwapi.h>
-#endif
-#ifdef HAVE_FNMATCH_H
-#include <fnmatch.h>
-#endif
-
-#if defined(HAVE_SHLWAPI_H) && !defined(HAVE_FNMATCH_H)
 //#define fnmatch(pattern,string,flags) (!PathMatchSpec(string,pattern))
-int fnmatch (const char * pattern, const char * string, int flags)
+static int fnmatch (const char * pattern, const char * string, int flags)
 {
    wchar_t pszFile[1024];
    wchar_t pszSpec[1024];
@@ -45,6 +47,8 @@ int fnmatch (const char * pattern, const char * string, int flags)
    mbstowcs (pszSpec, pattern, sizeof(pszSpec));
    return (!PathMatchSpecW (pszFile, pszSpec));
 }
+#elif HAVE_FNMATCH_H
+#include <fnmatch.h>
 #endif
 
 #ifndef VERSION

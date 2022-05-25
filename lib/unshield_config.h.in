@@ -65,9 +65,6 @@
 /* Define to 1 if you have the <fnmatch.h> header file. */
 #cmakedefine HAVE_FNMATCH_H @HAVE_FNMATCH_H@
 
-/* Define to 1 if you have the <shlwapi.h> header file. */
-#cmakedefine HAVE_SHLWAPI_H @HAVE_SHLWAPI_H@
-
 /* Define to 1 if your system has a working POSIX `iconv' function. */
 #cmakedefine HAVE_ICONV @HAVE_ICONV@
 

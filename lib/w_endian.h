@@ -57,7 +57,6 @@ extern "C" {
 
 #elif defined(_WIN32)
 //#   include <windows.h>
-#   define W_LITTLE_ENDIAN 1 /* assume Windows = Little endian */
 #   if defined(_MSC_VER)
 #       include <stdlib.h>
 #       define bswap16(x) _byteswap_ushort(x)
@@ -186,8 +185,7 @@ extern "C" {
       defined(_M_IA64)  || defined(_M_ALPHA)   ||                          \
       defined(__amd64)  || defined(__amd64__)  || defined(_M_AMD64)   ||   \
       defined(__x86_64) || defined(__x86_64__) || defined(_M_X64)     ||   \
-      defined(__bfin__) || defined(__VMS)                                  \
-      defined(__OS2__)  || defined(__TURBOC__)
+      defined(__bfin__) || defined(__VMS)
 #   ifdef DEBUG_W_ENDIAN
 #       warning [DEBUG] extra LITTLE ENDIAN macros detected
 #   endif
