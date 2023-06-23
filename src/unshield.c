@@ -21,7 +21,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#ifdef HAVE_GETOPT_H
 #include <getopt.h>
+#else
+#include "w_getopt.h"
+#endif
 #include <errno.h>
 #include "../lib/libunshield.h"
 

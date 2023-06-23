@@ -37,7 +37,7 @@ w_main_func()
 
 	# detect the presence of headers
 	# config.h: define HAVE_ZCONF_H if zconf.h is present, etc
-	w_check_headers inttypes.h unistd.h dlfcn.h fnmatch.h
+	w_check_headers inttypes.h unistd.h dlfcn.h fnmatch.h getopt.h
     
 	CFLAGS="-DAUTOTOOLS $CFLAGS"
 }
