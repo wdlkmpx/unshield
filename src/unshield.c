@@ -39,20 +39,10 @@
 #include <iconv.h>
 #endif
 
-#ifdef _WIN32
-/* Windows - PathMatchSpec */
-#include <shlwapi.h>
-//#define fnmatch(pattern,string,flags) (!PathMatchSpec(string,pattern))
-static int fnmatch (const char * pattern, const char * string, int flags)
-{
-   wchar_t pszFile[1024];
-   wchar_t pszSpec[1024];
-   mbstowcs (pszFile, string,  sizeof(pszFile));
-   mbstowcs (pszSpec, pattern, sizeof(pszSpec));
-   return (!PathMatchSpecW (pszFile, pszSpec));
-}
-#elif HAVE_FNMATCH_H
+#ifdef HAVE_FNMATCH_H
 #include <fnmatch.h>
+#else
+#include <w_fnmatch.h>
 #endif
 
 #ifndef VERSION
