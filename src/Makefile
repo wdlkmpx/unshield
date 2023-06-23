@@ -15,18 +15,12 @@ $(APP): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(APP) $(LDFLAGS) $(LIBS)
 
 strip: all
-	@if test -f $(APP).exe ; then \
-		echo $(STRIP) $(APP).exe; \
-		$(STRIP) $(APP).exe; \
-	else \
-		echo $(STRIP) $(APP); \
-		$(STRIP) $(APP); \
-	fi;
+	$(STRIP) $(APP)
 
 distclean: clean
 
 clean:
-	rm -f *.o *~ $(APP) $(APP).exe
+	rm -f *.o *~ $(APP)
 
 install: all
 	mkdir -p $(DESTDIR)$(bindir)
