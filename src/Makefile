@@ -1,6 +1,6 @@
 include ../config.mk
 
-APP  = unshield
+APP  = unshield$(EXE)
 # ls *.c | sed "s%\.c%.o%g" | tr "\n" " " >> Makefile
 OBJS =  unshield.o
 
