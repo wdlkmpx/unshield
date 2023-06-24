@@ -24,12 +24,13 @@ clean:
 	rm -f *.o *~ *.a *.so convert_utf/*.o zlib/*.o
 
 install: $(LIB_STATIC)
-	mkdir -p $(DESTDIR)$(libdir)
+	mkdir -p $(DESTDIR)$(libdir)/pkgconfig
 	install -c $(LIB_STATIC) $(DESTDIR)$(libdir)
+	install -c ../libunshield.pc $(DESTDIR)$(libdir)/pkgconfig
 
 install-strip: install
 
 uninstall:
-	rm -f $(DESTDIR)$(libdir)/$(LIB_STATIC)*
+	rm -f $(DESTDIR)$(libdir)/$(LIB_STATIC)
 
 

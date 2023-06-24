@@ -20,7 +20,7 @@ PROJECT_TYPE=C
 # Makefile
 MK_SUBDIRS='lib src'
 MK_DISTCLEAN_FILES=''
-MK_CHECK=''
+MK_CHECK='./run-tests.sh'
 
 
 # configure the project using the commands provided
@@ -46,7 +46,12 @@ w_main_func()
 # function to run after performing all checks
 w_aftercheck_func()
 {
-	printf ""
+	generate_pkgconfig \
+		filebase='libunshield' \
+		name='libunshield' \
+		"description='Library to extract CAB files from InstallShield installers'" \
+		version="${VERSION}" \
+		libraries='-lunshield'
 }
 
 
@@ -59,11 +64,3 @@ w_finish_func()
 		echo "#define __GNU_SOURCE 1" >> config.h
 	fi
 }
-
-#=====================================================================
-# CMAKE compat
-#AC_SUBST(CMAKE_INSTALL_PREFIX, [${prefix}])
-#AC_SUBST(CMAKE_INSTALL_FULL_BINDIR, [${prefix}])
-#AC_SUBST(CMAKE_INSTALL_FULL_LIBDIR, [${libdir}])
-#AC_SUBST(CMAKE_INSTALL_FULL_INCLUDEDIR, [${includedir}])
-#AC_SUBST(PROJECT_VERSION, [${VERSION}])

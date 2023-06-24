@@ -459,6 +459,50 @@ w_require_gnu_make()
 	w_prefer_gnu_make require
 }
 
+generate_pkgconfig()
+{
+	(
+	unset name description version libs cflags filebase
+	unset requires requires_private libraries libraries_private
+	for i in "$@" ; do
+		case "$i" in
+			*=*) ok=1 ;;
+			*) echo "generate_pkgconfig: $i: invalid parameter"
+				return -1 ;;
+		esac
+	done
+	eval "${@}"
+	if [ -z "$filebase" ] ; then
+		echo "generate_pkgconfig: filebase was not especified"
+		return -1
+	fi
+	echo 'prefix='${prefix}'
+exec_prefix=${prefix}
+libdir='${libdir}'
+includedir='${includedir}'
+
+Name: '${name}'
+Description: '${description}'
+Version: '${version}'' > ${filebase}.pc
+	if [ -n "${requires}" ] ; then
+		echo "Requires: ${requires}" >> ${filebase}.pc
+	fi
+	if [ -n "${requires_private}" ] ; then
+		echo "Requires.private: ${requires_private}" >> ${filebase}.pc
+	fi
+	if [ -n "${libraries}" ] ; then
+		echo 'Libs: -L${libdir} '${libraries}''  >> ${filebase}.pc
+	fi
+	if [ -n "${libraries_private}" ] ; then
+		echo "Libs.private: ${libraries_private}" >> ${filebase}.pc
+	fi
+	echo 'Cflags: -I${includedir} '${cflags}'' >> ${filebase}.pc
+	)
+	if [ $? -ne 0 ] ; then
+		exit 1
+	fi
+}
+
 #==========================================================
 
 #test "$CC"    || CC='cc'
