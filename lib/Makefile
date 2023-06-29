@@ -3,13 +3,18 @@ include ../config.mk
 LIB_STATIC = libunshield.a
 
 # ls *.c | sed "s%\.c%.o%g" | tr "\n" " " >> Makefile
-OBJS = component.o directory.o file.o file_group.o helper.o libunshield.o log.o \
-	convert_utf/ConvertUTF.o \
-	zlib/adler32.o zlib/inffast.o zlib/inflate.o zlib/inftrees.o zlib/zutil.o
+OBJS = component.o \
+	directory.o \
+	file.o \
+	file_group.o \
+	helper.o \
+	libunshield.o \
+	log.o \
+	convert_utf/ConvertUTF.o $(BUILTIN_ZLIB_O)
 
 #CPPFLAGS += -I..
-CFLAGS += -I.. -Izlib
-LIBS   += 
+CFLAGS += -I.. $(ZLIB_CFLAGS)
+LIBS   += $(ZLIB_LIBS)
 
 all: $(LIB_STATIC)
 

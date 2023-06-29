@@ -7,7 +7,7 @@ OBJS =  unshield.o
 LDFLAGS +=
 #CPPFLAGS += -I..
 CFLAGS += -I.. -I../lib $(ICONV_CFLAGS)
-LIBS   += ../lib/libunshield.a  $(ICONV_LIBS) $(LSHLWAPI)
+LIBS   += ../lib/libunshield.a $(ICONV_LIBS) $(ZLIB_LIBS) $(LSHLWAPI)
 
 all: $(APP)
 

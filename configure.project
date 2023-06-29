@@ -22,6 +22,7 @@ MK_SUBDIRS='lib src'
 MK_DISTCLEAN_FILES=''
 MK_CHECK='./run-tests.sh'
 
+add_env_help ZLIB
 
 # configure the project using the commands provided
 # by `configure` and other scripts and commands/tools
@@ -30,7 +31,7 @@ w_main_func()
 	# GCC=yes if gcc has been detected
 
 	# if the Makefiles are only compatible with GNU make, use w_require_gnu_make
-	#w_prefer_gnu_make
+	w_prefer_gnu_make
 
 	# check required headers and exit on error
 	w_check_headers_required stdio.h
@@ -40,18 +41,38 @@ w_main_func()
 	w_check_headers inttypes.h unistd.h dlfcn.h fnmatch.h getopt.h
     
 	CFLAGS="-DAUTOTOOLS $CFLAGS"
-}
 
+	ZLIB_FOUND=
+	if [ -n "$ZLIB_CFLAGS" ] || [ -n "$ZLIB_LIBS" ] ; then
+		ZLIB_FOUND=1
+	fi
+	if [ ! "$ZLIB_FOUND" ] ; then
+		find_pkgconfig  env='ZLIB' pc='zlib' required='false' #minver=1.2.11
+		if [ ! "$ZLIB_FOUND" ] ; then
+			find_lib  env='ZLIB' headers='zlib.h' libs='-lz' required='true'
+		fi
+	fi
+}
 
 # function to run after performing all checks
 w_aftercheck_func()
 {
+	unset USE_BUILTIN_ZLIB
+	libprivate='libraries_private=-lz'
+	if [ ! "$ZLIB_FOUND" ] ; then
+		echo "** Using builtin zlib"
+		ZLIB_DIR="$(pwd)/0lib/zlib"
+		#directly compiled into libunshield
+		set_env_flags ZLIB "" "-I${ZLIB_DIR}"
+		USE_BUILTIN_ZLIB=1
+		libprivate=''
+	fi
 	generate_pkgconfig \
 		filebase='libunshield' \
 		name='libunshield' \
-		"description='Library to extract CAB files from InstallShield installers'" \
+		description='Library to extract CAB files from InstallShield installers' \
 		version="${VERSION}" \
-		libraries='-lunshield'
+		libraries='-lunshield' ${libprivate}
 }
 
 
@@ -62,5 +83,8 @@ w_finish_func()
 		echo "LCOMDLG32 = -lcomdlg32" >> config.mk
 		echo "LSHLWAPI = -lshlwapi" >> config.mk
 		echo "#define __GNU_SOURCE 1" >> config.h
+	fi
+	if [ -n "$USE_BUILTIN_ZLIB" ] ; then
+		echo "BUILTIN_ZLIB_O = zlib/adler32.o zlib/inffast.o zlib/inflate.o zlib/inftrees.o zlib/zutil.o" >> config.mk
 	fi
 }
