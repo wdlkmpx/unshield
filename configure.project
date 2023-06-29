@@ -2,7 +2,7 @@
 
 # Project name and version
 PACKAGE="unshield"
-VERSION="1.5w"
+VERSION="1.6.0w"
 PACKAGE_URL=''
 
 # Flags that will be used in all makefiles that compile code...
@@ -49,7 +49,7 @@ w_main_func()
 	if [ ! "$ZLIB_FOUND" ] ; then
 		find_pkgconfig  env='ZLIB' pc='zlib' required='false' #minver=1.2.11
 		if [ ! "$ZLIB_FOUND" ] ; then
-			find_lib  env='ZLIB' headers='zlib.h' libs='-lz' required='true'
+			find_lib  env='ZLIB' headers='zlib.h' libs='-lz' required='false'
 		fi
 	fi
 }
@@ -61,7 +61,7 @@ w_aftercheck_func()
 	libprivate='libraries_private=-lz'
 	if [ ! "$ZLIB_FOUND" ] ; then
 		echo "** Using builtin zlib"
-		ZLIB_DIR="$(pwd)/0lib/zlib"
+		ZLIB_DIR="$(pwd)/lib/zlib"
 		#directly compiled into libunshield
 		set_env_flags ZLIB "" "-I${ZLIB_DIR}"
 		USE_BUILTIN_ZLIB=1
@@ -86,5 +86,6 @@ w_finish_func()
 	fi
 	if [ -n "$USE_BUILTIN_ZLIB" ] ; then
 		echo "BUILTIN_ZLIB_O = zlib/adler32.o zlib/inffast.o zlib/inflate.o zlib/inftrees.o zlib/zutil.o" >> config.mk
+		echo "#define HAVE_LOCAL_ZLIB 1" >> config.h
 	fi
 }

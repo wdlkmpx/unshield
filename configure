@@ -986,10 +986,10 @@ fi
 
 EXE=''
 case ${OS_BUILD} in
-	CYGWIN*) OS_BUILD="Cygwin" ; EXE = '.exe' ;;
-	MINGW*|MSYS*)  OS_BUILD="MinGW" ; EXE = '.exe' ;;
-	UWIN*|Windows*)OS_BUILD="MinGW" ; EXE = '.exe' ;;
-	MS-DOS*) OS_BUILD="MSDOS" ; EXE = '.exe' ;;
+	CYGWIN*) OS_BUILD="Cygwin" ; EXE='.exe' ;;
+	MINGW*|MSYS*)  OS_BUILD="MinGW" ; EXE='.exe' ;;
+	UWIN*|Windows*)OS_BUILD="MinGW" ; EXE='.exe' ;;
+	MS-DOS*) OS_BUILD="MSDOS" ; EXE='.exe' ;;
 esac
 
 OS_TARGET=${OS_BUILD}
